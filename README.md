@@ -35,3 +35,12 @@ A native iOS app or manufacturer-supported integration may be needed for hardwar
 
 ## Input and controller modes
 The dashboard includes selectable UI modes for camera-based hand tracking, compatible VR controllers/gamepads, iPhone motion sensors, and touch controls. These are preference/interface selections, not implemented system-wide input drivers. Hand tracking requires compatible tracking hardware or a native app using camera/hand-pose APIs, plus an application that accepts the hand input. iPhone motion data requires permission and app-level integration. Bluetooth controllers work only where iOS, Steam Link, and the target game support them. This web app cannot inject hand/controller input into other iPhone apps.
+
+
+## iPhone camera motion tracking (v5)
+- Start the **iPhone camera motion tracker** from the dashboard in Safari over HTTPS and grant camera permission.
+- The browser loads MediaPipe Pose Landmarker Lite and estimates a single person's 33 body landmarks. It draws a live skeleton overlay and displays simple arm-raise / arms-spread gesture labels.
+- The camera feed is processed in the browser and is not uploaded or saved by this feature. Stop tracking or leave the page to stop the camera.
+- Best results: use the rear or front camera in a bright, uncluttered space; place the iPhone so your full body is visible from roughly 6–10 feet away. Performance varies by iPhone, lighting, browser, and thermal state.
+- This is **body-pose tracking**, not full Kinect hardware: it does not provide depth sensing, individual finger tracking, precise 6DoF tracking, or room-scale controller tracking. The gesture labels are visual feedback only and are not injected into other apps or games.
+- The model and runtime are downloaded from public CDNs the first time the tracker is used, so an internet connection is required to initialize it. The camera itself requires HTTPS and explicit permission.
