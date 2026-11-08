@@ -36,6 +36,13 @@ footer{text-align:center;color:#7487a3;font-size:10px;padding:22px 8px 8px}
 <a class="game" href="https://www.youtube.com/" target="_blank" rel="noopener"><span class="game-icon">🥽</span><strong>VR media</strong><small>Open video services. A true stereoscopic view needs compatible content and display optics.</small><span class="launch">OPEN VIDEOS ↗</span></a>
 </section>
 
+<div class="section-head"><h3>Control modes</h3><span>Choose your preferred input style</span></div>
+<section class="panel" id="controlPanel">
+<h3>VR input selection</h3>
+<div class="setting-row"><label for="controlMode">Primary controls</label><select id="controlMode"><option value="hands">Hand movement (tracking required)</option><option value="controllers">VR controllers / gamepad</option><option value="motion">iPhone motion / gyro</option><option value="touch">Touch controls</option></select></div>
+<div class="metric"><span>Selected input</span><b id="controlStatus">Hand movement</b></div>
+<p id="controlDescription" style="font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:0">Hand gestures need a compatible camera-based tracking system and an app that accepts tracked hand input. The dashboard selection alone does not enable system-wide hand control.</p>
+</section>
 <div class="section-head"><h3>Device center</h3><span>Live hardware data unavailable until compatible</span></div>
 <section class="panel-grid">
 <div class="panel"><h3>Display & connection</h3>
@@ -58,6 +65,19 @@ footer{text-align:center;color:#7487a3;font-size:10px;padding:22px 8px 8px}
 </main>
 <script>
 const $=id=>document.getElementById(id);
+const controlDescriptions={
+ hands:["Hand movement","Hand gestures need compatible camera-based tracking and app-level hand-input support. This website cannot provide system-wide hand tracking."],
+ controllers:["VR controllers / gamepad","Use a compatible controller paired with iPhone or supported by Steam Link. Controller support depends on the game and app."],
+ motion:["iPhone motion / gyro","The iPhone's motion sensors can provide orientation data to an app that requests permission. They cannot automatically steer other apps."],
+ touch:["Touch controls","Use on-screen controls where the game or streaming app supports touch input."]
+};
+$("controlMode").addEventListener("change",()=>{
+ const mode=$("controlMode").value;
+ const info=controlDescriptions[mode];
+ $("controlStatus").textContent=info[0];
+ $("controlDescription").textContent=info[1];
+});
+
 $("displayCheck").addEventListener("click",()=>{
  const usbC= /iPhone/.test(navigator.userAgent);
  $("videoSupport").textContent=usbC?"USB-C model; exact model dependent":"Check iPhone model";
