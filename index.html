@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ScooterLink">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon.svg">
+<title>ScooterLink</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#151f30;--muted:#9aa9bf;--blue:#55a7ff;--line:#26364d}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#172b46 0,#0b1220 55%);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f4f7fb;min-height:100vh}
+main{max-width:560px;margin:auto;padding:calc(22px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;gap:12px;margin-bottom:24px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#5db8ff,#3868e8);display:grid;place-items:center;font-size:24px;font-weight:800}
+h1{font-size:25px;margin:0}header p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.card{background:rgba(21,31,48,.94);border:1px solid var(--line);border-radius:20px;padding:18px;margin:14px 0;box-shadow:0 10px 30px #0002}
+.eyebrow{font-size:11px;letter-spacing:1.4px;color:var(--muted);font-weight:700}.status{display:flex;align-items:center;gap:10px;margin:12px 0 5px;font-size:18px;font-weight:700}.dot{width:10px;height:10px;border-radius:50%;background:#f0b44d;box-shadow:0 0 12px #f0b44d66}
+p{line-height:1.45}.muted{color:var(--muted);font-size:13px}
+button{border:0;border-radius:13px;padding:14px 16px;font-size:15px;font-weight:700;color:white;background:linear-gradient(135deg,#368cf4,#5268ed);width:100%;cursor:pointer}
+button.secondary{background:#24344b;border:1px solid #344963}button:active{transform:scale(.99)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tile{background:#111b2a;border:1px solid var(--line);border-radius:15px;padding:15px;min-height:100px}.tile .ico{font-size:22px}.tile b{display:block;margin:8px 0 4px}.tile small{color:var(--muted);font-size:12px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.pill{border:1px solid #705b32;color:#f6ca78;background:#3a2d19;border-radius:30px;padding:5px 9px;font-size:11px;font-weight:700}
+footer{text-align:center;color:#73849d;font-size:11px;padding:12px 8px}
+</style>
+</head>
+<body><main>
+<header><div class="logo">S</div><div><h1>ScooterLink</h1><p>Smart glasses companion</p></div></header>
+<section class="card">
+ <div class="eyebrow">DEVICE CONNECTION</div>
+ <div class="status"><span class="dot"></span><span id="connection">Not connected</span></div>
+ <p class="muted" id="connectionHelp">Your glasses haven't been connected. Device discovery requires a supported connection method.</p>
+ <button id="connect">Check connection options</button>
+</section>
+<section class="card">
+ <div class="eyebrow">GLASSES CONTROLS</div>
+ <div class="grid" style="margin-top:14px">
+  <div class="tile"><span class="ico">🖥️</span><b>Phone display</b><small>Screen mirroring support not verified</small></div>
+  <div class="tile"><span class="ico">🔊</span><b>Audio</b><small>Audio routing managed by iOS</small></div>
+  <div class="tile"><span class="ico">🔋</span><b>Battery</b><small id="battery">Not available</small></div>
+  <div class="tile"><span class="ico">⚙️</span><b>Device settings</b><small>Ready for compatible device integration</small></div>
+ </div>
+</section>
+<section class="card">
+ <div class="row"><div><div class="eyebrow">INSTALLATION</div><b style="display:block;margin-top:7px">Add ScooterLink to your Home Screen</b></div><span class="pill">iPhone</span></div>
+ <p class="muted">Once GitHub Pages is enabled, open the HTTPS site in Safari, tap Share, then choose “Add to Home Screen.”</p>
+ <button class="secondary" id="installHelp">Show install instructions</button>
+</section>
+<footer>ScooterLink preview · Hardware features are not verified until tested.</footer>
+</main>
+<script>
+document.getElementById('connect').addEventListener('click',()=>{
+ document.getElementById('connection').textContent='Direct connection unavailable here';
+ document.getElementById('connectionHelp').textContent='iOS Safari does not support Web Bluetooth. A native iOS app or a compatible glasses integration is required for direct Bluetooth control.';
+});
+document.getElementById('installHelp').addEventListener('click',()=>{
+ alert('Open this site in Safari, tap Share, then Add to Home Screen. The app must be served over HTTPS.');
+});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script></body></html>
