@@ -1,4 +1,4 @@
-const CACHE = "scooterlink-v3";
+const CACHE = "scooterlink-v4";
 const FILES = ["./", "./index.html", "./manifest.json", "./icon.svg"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)));
