@@ -1,11 +1,13 @@
 {
-  "name": "ScooterLink",
+  "name": "ScooterLink VR",
   "short_name": "ScooterLink",
+  "description": "iPhone companion dashboard for compatible smart glasses and display devices.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0b1220",
-  "theme_color": "#101827",
+  "orientation": "any",
+  "background_color": "#080d19",
+  "theme_color": "#080d19",
   "icons": [
     {
       "src": "./icon.svg",
