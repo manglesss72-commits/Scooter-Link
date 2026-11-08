@@ -24,7 +24,7 @@ footer{text-align:center;color:#7487a3;font-size:10px;padding:22px 8px 8px}
 .camera-wrap{display:grid;grid-template-columns:1fr;gap:12px}
 .camera-stage{position:relative;overflow:hidden;aspect-ratio:4/3;background:#050a12;border:1px solid #35506e;border-radius:14px;min-height:220px}
 .camera-stage video,.camera-stage canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.camera-stage video{transform:scaleX(-1)}
+.camera-stage video,.camera-stage canvas{transform:scaleX(1)}
 .camera-stage canvas{pointer-events:none}
 .camera-placeholder{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;color:#9aacc6;font-size:12px;line-height:1.5}
 .camera-actions{display:flex;gap:8px;flex-wrap:wrap}
@@ -191,6 +191,7 @@ async function startCamera(){
    video.srcObject=stream;await video.play();resizeCanvas();
    running=true;el("cameraPlaceholder").style.display="none";el("cameraStatus").textContent="On";el("stopTracking").disabled=false;
    el("facingStatus").textContent=facing==="user"?"Front":"Rear";
+   video.style.transform=canvas.style.transform=facing==="user"?"scaleX(-1)":"scaleX(1)";
    fpsStart=performance.now();frames=0;requestAnimationFrame(trackFrame);
  }catch(err){el("cameraStatus").textContent="Unavailable";el("poseStatus").textContent="Could not start";alert("Camera tracking could not start: "+err.message);el("startTracking").disabled=false;}
 }
@@ -210,7 +211,7 @@ function stopCamera(){
 }
 el("startTracking").addEventListener("click",startCamera);
 el("stopTracking").addEventListener("click",stopCamera);
-el("flipCamera").addEventListener("click",async()=>{facing=facing==="user"?"environment":"user";el("facingStatus").textContent=facing==="user"?"Front":"Rear";if(running){stopCamera();await startCamera();}});
+el("flipCamera").addEventListener("click",async()=>{facing=facing==="user"?"environment":"user";el("facingStatus").textContent=facing==="user"?"Front":"Rear";video.style.transform=canvas.style.transform=facing==="user"?"scaleX(-1)":"scaleX(1)";if(running){stopCamera();await startCamera();}});
 window.addEventListener("pagehide",stopCamera);
 </script>
 </body></html>
