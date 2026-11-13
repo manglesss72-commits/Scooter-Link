@@ -1,217 +1,36 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080d19">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ScooterLink VR">
-<link rel="manifest" href="./manifest.json">
-<link rel="apple-touch-icon" href="./icon.svg">
-<title>ScooterLink VR</title>
-<style>
-:root{color-scheme:dark;--bg:#080d19;--panel:#111b2c;--panel2:#18263b;--line:#263b59;--muted:#9aacc6;--cyan:#68d9ff;--blue:#568cff;--good:#70e0b0;--warn:#ffd27a}
-*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -15%,#203d66 0,#0c1628 45%,#080d19 78%);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f5f8ff}
-button,a{font:inherit}button{cursor:pointer}.shell{max-width:1050px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 16px calc(26px + env(safe-area-inset-bottom))}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(140deg,#74e3ff,#456cf3);display:grid;place-items:center;color:#071322;font-size:23px;font-weight:900;box-shadow:0 0 28px #4eaaff44}.brand h1{font-size:21px;margin:0;letter-spacing:.3px}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}.status-chip{border:1px solid #745c31;background:#352b1b;color:var(--warn);border-radius:30px;padding:7px 10px;font-size:11px;font-weight:750}
-.hero{position:relative;overflow:hidden;border:1px solid #35577e;border-radius:24px;padding:23px;background:linear-gradient(115deg,#142a46,#14223a 55%,#1a2851);box-shadow:0 18px 55px #0005}.hero:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #80dfff33;border-radius:50%;right:-75px;top:-105px;box-shadow:0 0 0 25px #80dfff0a,0 0 0 55px #80dfff08}.eyebrow{font-size:10px;letter-spacing:1.7px;font-weight:800;color:#91b9e5}.hero h2{font-size:clamp(27px,6vw,43px);margin:9px 0 6px;letter-spacing:-1px}.hero p{max-width:560px;color:#bdcce0;line-height:1.5;margin:0}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:750;color:#061323;background:linear-gradient(120deg,#80e5ff,#6b9aff)}.btn.alt{background:#243954;color:#e8f3ff;border:1px solid #426080}
-.section-head{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:25px 2px 12px}.section-head h3{margin:0;font-size:17px}.section-head span{font-size:11px;color:var(--muted)}
-.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.game{display:flex;flex-direction:column;min-height:160px;padding:15px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(150deg,#17263b,#101a2a);text-decoration:none;color:#f5f8ff;transition:transform .15s,border-color .15s}.game:active{transform:scale(.985)}.game-icon{font-size:27px}.game strong{font-size:15px;margin-top:10px}.game small{color:var(--muted);line-height:1.4;margin-top:4px}.game .launch{margin-top:auto;padding-top:13px;color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:.4px}
-.panel-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}.panel{border:1px solid var(--line);border-radius:18px;padding:16px;background:#111b2cdd}.panel h3{font-size:14px;margin:0 0 13px}.metric{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid #26364d;font-size:12px}.metric:first-of-type{border-top:0}.metric span:first-child{color:var(--muted)}.metric b{font-weight:700;text-align:right}.warning{border:1px solid #705a32;background:#2b251b;color:#f6d99c;border-radius:14px;padding:13px;font-size:12px;line-height:1.5;margin-top:14px}.warning b{color:#ffe5b4}.good-note{color:#a5e8ce}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid #26364d;font-size:12px}.setting-row select{background:#1d2c42;color:#fff;border:1px solid #3b526e;border-radius:9px;padding:8px;max-width:150px}
-footer{text-align:center;color:#7487a3;font-size:10px;padding:22px 8px 8px}
-
-.camera-wrap{display:grid;grid-template-columns:1fr;gap:12px}
-.camera-stage{position:relative;overflow:hidden;aspect-ratio:4/3;background:#050a12;border:1px solid #35506e;border-radius:14px;min-height:220px}
-.camera-stage video,.camera-stage canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.camera-stage video,.camera-stage canvas{transform:scaleX(1)}
-.camera-stage canvas{pointer-events:none}
-.camera-placeholder{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;color:#9aacc6;font-size:12px;line-height:1.5}
-.camera-actions{display:flex;gap:8px;flex-wrap:wrap}
-.camera-actions button{border:1px solid #426080;background:#243954;color:#e8f3ff;border-radius:10px;padding:10px 13px;font-weight:700}
-.camera-actions button.primary{background:linear-gradient(120deg,#80e5ff,#6b9aff);color:#061323;border:0}
-.camera-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.camera-stat{background:#0b1422;border:1px solid #263b59;border-radius:10px;padding:10px;font-size:11px;color:#9aacc6}
-.camera-stat b{display:block;color:#f5f8ff;font-size:13px;margin-top:4px}
-@media(min-width:700px){.camera-wrap{grid-template-columns:1.25fr .75fr}}
-
-@media(min-width:700px){.shell{padding-left:28px;padding-right:28px}.games{grid-template-columns:repeat(4,minmax(0,1fr))}.panel-grid{grid-template-columns:1fr 1fr}.hero{padding:30px}.game{min-height:178px}}
-</style>
-</head>
-<body><main class="shell">
-<header class="topbar"><div class="brand"><div class="logo">S</div><div><h1>SCOOTERLINK</h1><p>PERSONAL DISPLAY COMPANION</p></div></div><span class="status-chip" id="deviceStatus">GLASSES NOT VERIFIED</span></header>
-<section class="hero"><div class="eyebrow">IMMERSIVE DASHBOARD · IPHONE EDITION</div><h2>VR HOME</h2><p>Your iPhone is the host device. Choose a game, review display compatibility, and manage your glasses connection from one place.</p><div class="hero-actions"><button class="btn" id="displayCheck">Check display support</button><button class="btn alt" id="connectionHelp">Connection guide</button></div></section>
-
-<div class="section-head"><h3>Game library</h3><span>iPhone apps and PC game streaming · not VR conversions</span></div>
-<section class="games" aria-label="Game launchers">
-<a class="game" href="https://www.roblox.com/" target="_blank" rel="noopener"><span class="game-icon">🎮</span><strong>Roblox</strong><small>Open Roblox mobile. Official VR mode is not provided by this iPhone launcher.</small><span class="launch">OPEN ROBLOX ↗</span></a>
-<a class="game" href="https://www.minecraft.net/" target="_blank" rel="noopener"><span class="game-icon">⛏️</span><strong>Minecraft</strong><small>Open Minecraft information. Mobile Bedrock is not the discontinued VR mode.</small><span class="launch">MINECRAFT ↗</span></a>
-<a class="game" href="https://www.fortnite.com/mobile" target="_blank" rel="noopener"><span class="game-icon">🪂</span><strong>Fortnite</strong><small>Check supported iPhone availability. This does not add a Fortnite VR mode.</small><span class="launch">FORTNITE MOBILE ↗</span></a>
-<a class="game" href="https://apps.apple.com/us/app/steam-link/id1246969117" target="_blank" rel="noopener"><span class="game-icon">🕹️</span><strong>Steam Link</strong><small>Stream Steam games from your Windows, Mac, or Linux gaming PC. The PC runs the game; iPhone receives the stream.</small><span class="launch">GET STEAM LINK ↗</span></a>
-<a class="game" href="https://www.youtube.com/" target="_blank" rel="noopener"><span class="game-icon">🥽</span><strong>VR media</strong><small>Open video services. A true stereoscopic view needs compatible content and display optics.</small><span class="launch">OPEN VIDEOS ↗</span></a>
-</section>
-
-<div class="section-head"><h3>Control modes</h3><span>Choose your preferred input style</span></div>
-<section class="panel" id="controlPanel">
-<h3>VR input selection</h3>
-<div class="setting-row"><label for="controlMode">Primary controls</label><select id="controlMode"><option value="hands">Hand movement (tracking required)</option><option value="controllers">VR controllers / gamepad</option><option value="motion">iPhone motion / gyro</option><option value="touch">Touch controls</option></select></div>
-<div class="metric"><span>Selected input</span><b id="controlStatus">Hand movement</b></div>
-<p id="controlDescription" style="font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:0">Start the iPhone camera tracker below to estimate your full-body pose and show a live skeleton. This first version tracks body joints and simple arm gestures; it does not track individual fingers or control other apps.</p>
-</section>
-
-<div class="section-head"><h3>iPhone camera motion tracker</h3><span>Kinect-style body tracking preview</span></div>
-<section class="panel">
-  <div class="camera-wrap">
-    <div>
-      <div class="camera-stage">
-        <video id="motionVideo" playsinline muted></video>
-        <canvas id="motionCanvas"></canvas>
-        <div class="camera-placeholder" id="cameraPlaceholder">Camera is off.<br>Start tracking to see your live body-skeleton overlay.</div>
-      </div>
-      <div class="camera-actions" style="margin-top:10px">
-        <button class="primary" id="startTracking">Start camera tracking</button>
-        <button id="stopTracking" disabled>Stop camera</button>
-        <button id="flipCamera">Flip camera</button>
-      </div>
-    </div>
-    <div>
-      <h3 style="margin-top:0">Live tracking status</h3>
-      <div class="camera-stats">
-        <div class="camera-stat">Camera<b id="cameraStatus">Off</b></div>
-        <div class="camera-stat">Body pose<b id="poseStatus">Waiting</b></div>
-        <div class="camera-stat">Tracked points<b id="pointStatus">0</b></div>
-        <div class="camera-stat">Estimated FPS<b id="trackingFps">—</b></div>
-        <div class="camera-stat">Gesture<b id="gestureStatus">None</b></div>
-        <div class="camera-stat">Camera facing<b id="facingStatus">Front</b></div>
-      </div>
-      <p style="font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:0">Uses the iPhone camera and on-device pose estimation to draw a live 33-point body skeleton. Keep your full body visible, stand about 6–10 feet away, and use good lighting. This first version tracks body pose, not individual finger joints or true 6DoF VR controllers.</p>
-    </div>
-  </div>
-  <div class="warning"><b>Privacy and compatibility:</b> Camera access requires permission and the app to be opened over HTTPS in Safari. Video is processed in the browser; this feature does not upload or save camera footage. Keep the page open while tracking. It is a motion-tracking preview, not a system-wide controller for Roblox, Fortnite, or other apps.</div>
-</section>
-
-<div class="section-head"><h3>Device center</h3><span>Live hardware data unavailable until compatible</span></div>
-<section class="panel-grid">
-<div class="panel"><h3>Display & connection</h3>
-<div class="metric"><span>iPhone model family</span><b>iPhone 16 / 17</b></div>
-<div class="metric"><span>USB-C video</span><b id="videoSupport">Model dependent</b></div>
-<div class="metric"><span>Temu glasses display input</span><b>Not verified</b></div>
-<div class="metric"><span>Bluetooth video</span><b>Not supported</b></div>
-<div class="metric"><span>Glasses battery</span><b>Not available</b></div>
-<p class="muted" style="font-size:11px;color:var(--muted);line-height:1.5">Steam Link streams PC-rendered video over Wi-Fi; it does not run Windows Steam games on the iPhone. For best Steam Link performance, connect the gaming PC to the router by Ethernet and connect the iPhone to 5 GHz Wi-Fi. Bluetooth can handle pairing and supported audio/control features. Smooth video requires a glasses display input and a compatible video path such as USB-C DisplayPort or a supported wireless display receiver.</p>
-</div>
-<div class="panel"><h3>Performance preferences</h3>
-<div class="setting-row"><label for="quality">Display quality target</label><select id="quality"><option>Balanced</option><option>Low latency</option><option>High quality</option></select></div>
-<div class="setting-row"><label for="motion">Motion preference</label><select id="motion"><option>Stable frame pacing</option><option>Maximum refresh (if supported)</option></select></div>
-<div class="setting-row"><label for="audio">Audio output</label><select id="audio"><option>iOS selected output</option><option>Glasses (if paired)</option></select></div>
-<p class="muted" style="font-size:11px;color:var(--muted);line-height:1.5">These are saved interface preferences only. A web app cannot force iPhone game frame rate, change iOS display routing, or measure glasses latency.</p>
-</div>
-</section>
-<div class="warning"><b>Compatibility notice:</b> The Temu glasses shown earlier were described as AI translation glasses. Their product information did not confirm a video display, USB-C DisplayPort input, or screen-mirroring support. ScooterLink will not claim screen mirroring, game streaming, or low-lag VR until the exact hardware connection is verified. Some iPhone 16/17 models support USB-C DisplayPort output; model variants differ.</div>
-<footer>ScooterLink VR preview · iPhone handles supported apps · glasses must support video input · Steam Link is an external app for PC game streaming; no native Steam game execution or VR conversion is active in this web app.</footer>
-</main>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#070d1b"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ScooterLink VR"><link rel="manifest" href="./manifest.json"><link rel="apple-touch-icon" href="./icon.svg"><title>ScooterLink VR — Horizon OS</title><style>
+:root{color-scheme:dark;--line:#75cfff44;--muted:#a5b7d0}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#070d1b;color:#f5f8ff;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,select{font:inherit;color:inherit}button{cursor:pointer}.sky{position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 110%,#175a83,transparent 48%),radial-gradient(ellipse at 18% 15%,#293b7a,transparent 40%),radial-gradient(ellipse at 85% 25%,#4b2b70,transparent 34%),linear-gradient(150deg,#0c1930,#050914)}.sky:after{content:"";position:absolute;width:70vw;height:70vw;max-width:800px;max-height:800px;border:1px solid #9ceaff22;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 35px #8beaff08,0 0 0 90px #8beaff05}main{max-width:1400px;margin:auto;padding:env(safe-area-inset-top) 18px 110px}.top{height:70px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px}.logo{width:40px;height:40px;border-radius:14px;background:linear-gradient(140deg,#8ceeff,#647cff);display:grid;place-items:center;color:#061323;font-size:22px;font-weight:900}.brand b{letter-spacing:1.6px}.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.5px}.status{border:1px solid #ffd58b55;color:#ffdc9b;background:#45341d88;border-radius:20px;padding:8px 11px;font-size:9px;font-weight:800}.hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;min-height:270px;padding:30px;border:1px solid #83dcff55;border-radius:28px;background:linear-gradient(115deg,#142b4add,#17213dcc 65%,#302453bb);backdrop-filter:blur(20px);box-shadow:0 22px 60px #0005}.hero:after{content:"";position:absolute;width:280px;height:280px;border:1px solid #9ceaff77;border-radius:50%;right:8%;top:50%;transform:translateY(-50%);box-shadow:0 0 0 20px #8beaff0b,0 0 0 50px #8beaff08,0 0 75px #64cfff33}.copy{z-index:1;max-width:650px}.eyebrow{font-size:10px;letter-spacing:2px;color:#8deaff;font-weight:800}.hero h1{font-size:clamp(38px,7vw,65px);letter-spacing:-2px;line-height:.98;margin:13px 0}.hero p{color:#c4d5e9;line-height:1.55;max-width:560px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.btn{border:1px solid #7698bf55;border-radius:12px;padding:12px 16px;background:#243b5c;color:white;font-weight:750}.btn.primary{background:linear-gradient(120deg,#8ceeff,#899cff);color:#071322;border:0}.planet{z-index:1;flex:0 0 170px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 32% 25%,#d1fbff,#6aa4d9 28%,#304c83 60%,#101a38 78%);box-shadow:inset -20px -18px 35px #0009,0 0 60px #6bcfff44}.section{margin-top:25px}.head{display:flex;justify-content:space-between;align-items:end;margin:0 2px 11px}.head h2{font-size:16px;margin:0}.head span{font-size:10px;color:var(--muted)}.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.tile{min-height:130px;text-align:left;border:1px solid var(--line);border-radius:18px;padding:14px;background:linear-gradient(150deg,#172a45e8,#0d192de8);backdrop-filter:blur(15px)}.tile span{font-size:25px}.tile b{display:block;margin-top:11px}.tile small{display:block;color:var(--muted);font-size:10px;margin-top:4px;line-height:1.4}.cols{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.panel{border:1px solid var(--line);border-radius:19px;background:#101c30dd;backdrop-filter:blur(18px);padding:16px}.panel h3{font-size:13px;margin:0 0 12px}.line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #7898bb22;font-size:11px}.line span,.hint{color:var(--muted)}select{background:#192c47;border:1px solid #7798bc66;border-radius:9px;padding:8px;max-width:180px}.hint{font-size:10px;line-height:1.55}.warning{margin-top:13px;border:1px solid #f8d28a44;background:#49371d77;color:#f8dfa9;border-radius:13px;padding:12px;font-size:10px;line-height:1.55}.dock{position:fixed;z-index:10;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:7px;padding:9px;border:1px solid #9adfff55;border-radius:21px;background:#091427e8;backdrop-filter:blur(22px);box-shadow:0 14px 45px #0009}.dock button{width:46px;height:46px;border:1px solid #7899bc33;border-radius:14px;background:#1b304e;font-size:19px}.dock button:first-child{background:linear-gradient(140deg,#8ceeff,#899cff);color:#071322}.window{display:none;position:fixed;z-index:20;left:50%;top:50%;transform:translate(-50%,-50%);width:min(720px,calc(100vw - 22px));max-height:78vh;overflow:auto;border:1px solid #8deaff77;border-radius:22px;background:#0b1729f5;box-shadow:0 25px 90px #000c;backdrop-filter:blur(28px)}.window.open{display:block}.winhead{position:sticky;top:0;background:#172942;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.winbody{padding:17px}.close{background:#29415f;border:1px solid var(--line);border-radius:9px;padding:8px 11px}.appgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.appcard{padding:13px;text-align:left;min-height:95px;border:1px solid var(--line);border-radius:14px;background:#162943}.appcard span{font-size:22px}.appcard b{display:block;margin-top:8px;font-size:11px}.appcard small{color:var(--muted);font-size:9px}.camera{width:100%;max-height:260px;border-radius:13px;background:#000;margin-top:12px}.toggle{width:38px;height:22px;accent-color:#66d7f5}@media(max-width:800px){.tiles{grid-template-columns:repeat(3,1fr)}.cols{grid-template-columns:1fr}}@media(max-width:560px){main{padding-left:12px;padding-right:12px}.hero{padding:22px 18px;min-height:260px}.hero h1{font-size:42px}.hero p{font-size:12px}.planet{position:absolute;right:-35px;bottom:-30px;width:125px;height:125px;opacity:.4}.tiles{grid-template-columns:repeat(2,1fr)}.appgrid{grid-template-columns:repeat(2,1fr)}.dock{gap:4px;padding:7px}.dock button{width:42px;height:43px}.head span{max-width:48%;text-align:right}}
+</style></head><body><div class="sky"></div><main>
+<header class="top"><div class="brand"><div class="logo">S</div><div><b>SCOOTERLINK VR</b><small>HORIZON OS · IPHONE EDITION</small></div></div><span class="status" id="badge">GLASSES UNVERIFIED</span></header>
+<section class="hero"><div class="copy"><div class="eyebrow">YOUR PERSONAL SPATIAL HUB</div><h1>Enter your<br>digital world.</h1><p>A redesigned home for games, streaming, motion controls and compatible smart-glasses tools. Your iPhone powers the experience; supported hardware determines what can be displayed.</p><div class="actions"><button class="btn primary" data-open="library">Open library ↗</button><button class="btn" data-open="device">Connect a device</button></div></div><div class="planet"></div></section>
+<section class="section"><div class="head"><h2>Launch center</h2><span>GAMES · STREAMING · MEDIA</span></div><div class="tiles">
+<button class="tile" data-launch="roblox"><span>🎮</span><b>Roblox</b><small>Open Roblox mobile</small></button><button class="tile" data-launch="minecraft"><span>⛏️</span><b>Minecraft</b><small>Game and account hub</small></button><button class="tile" data-launch="fortnite"><span>🪂</span><b>Fortnite</b><small>Check mobile availability</small></button><button class="tile" data-launch="steam"><span>🕹️</span><b>Steam Link</b><small>Stream from your gaming PC</small></button><button class="tile" data-open="media"><span>🥽</span><b>VR Media</b><small>Video and spatial content</small></button></div></section>
+<section class="section cols"><div class="panel"><h3>System overview</h3><div class="line"><span>Host device</span><b>iPhone 16 / 17</b></div><div class="line"><span>Glasses connection</span><b id="connection">Not verified</b></div><div class="line"><span>Input mode</span><b id="inputLabel">Touch</b></div><div class="line"><span>Motion sensor</span><b id="motionLabel">Not started</b></div><div class="line"><span>Game streaming</span><b>Steam Link app</b></div><p class="hint">This web shell launches supported services and uses browser permissions. It cannot replace iOS, run PC games locally, or inject controls into other apps.</p></div><div class="panel"><h3>Quick controls</h3><div class="line"><label for="inputMode">Control profile</label><select id="inputMode"><option value="touch">Touch screen</option><option value="gamepad">Bluetooth gamepad</option><option value="motion">iPhone motion</option><option value="camera">Camera preview</option></select></div><div class="line"><span>Immersive wallpaper</span><input class="toggle" id="wall" type="checkbox" checked></div><div class="line"><span>Reduce visual effects</span><input class="toggle" id="reduce" type="checkbox"></div><div class="line"><label for="audio">Audio preference</label><select id="audio"><option>iOS selected output</option><option>Glasses (if paired)</option><option>iPhone speaker</option></select></div><button class="btn" data-open="controls" style="width:100%;margin-top:10px">Open Control Center</button></div></section>
+<div class="warning"><b>Hardware note:</b> The Temu glasses listing previously shared did not confirm a video display or USB-C DisplayPort input. Bluetooth alone cannot transmit smooth screen video. We must verify the exact model before claiming mirroring, VR display, or low latency.</div><p class="hint" style="text-align:center;padding:18px">ScooterLink VR · Horizon OS concept · Browser-based iPhone companion</p></main>
+<nav class="dock"><button data-open="home">⌂</button><button data-open="library">▦</button><button data-open="controls">◉</button><button data-open="device">⌁</button><button data-open="media">▷</button><button data-open="settings">⚙</button></nav>
+<section class="window" id="win"><header class="winhead"><b id="winTitle">Horizon OS</b><button class="close" id="close">Close ✕</button></header><div class="winbody" id="winBody"></div></section>
 <script>
-const $=id=>document.getElementById(id);
-const controlDescriptions={
- hands:["Hand movement","Hand gestures need compatible camera-based tracking and app-level hand-input support. This website cannot provide system-wide hand tracking."],
- controllers:["VR controllers / gamepad","Use a compatible controller paired with iPhone or supported by Steam Link. Controller support depends on the game and app."],
- motion:["iPhone motion / gyro","The iPhone's motion sensors can provide orientation data to an app that requests permission. They cannot automatically steer other apps."],
- touch:["Touch controls","Use on-screen controls where the game or streaming app supports touch input."]
+const $=id=>document.getElementById(id),win=$("win"),body=$("winBody"),title=$("winTitle");
+const urls={roblox:"https://www.roblox.com/",minecraft:"https://www.minecraft.net/",fortnite:"https://www.fortnite.com/mobile",steam:"https://apps.apple.com/us/app/steam-link/id1246969117"};
+const names={library:"App Library",controls:"Control Center",device:"Device Center",media:"Media Space",settings:"System Settings"};
+const views={
+library:'<div class="appgrid"><button class="appcard" data-app="roblox"><span>🎮</span><b>Roblox</b><small>Mobile game launcher</small></button><button class="appcard" data-app="minecraft"><span>⛏️</span><b>Minecraft</b><small>Official game site</small></button><button class="appcard" data-app="fortnite"><span>🪂</span><b>Fortnite</b><small>Mobile availability</small></button><button class="appcard" data-app="steam"><span>🕹️</span><b>Steam Link</b><small>PC streaming client</small></button><button class="appcard" data-app="device"><span>⌁</span><b>Device Center</b><small>Glasses and controllers</small></button><button class="appcard" data-app="media"><span>🥽</span><b>Media Space</b><small>Video and spatial content</small></button></div><p class="hint">Shortcuts open official services. They do not create unsupported VR modes.</p>',
+controls:'<h3>Input and tracking</h3><div class="line"><label>Input profile</label><select id="modalMode"><option value="touch">Touch screen</option><option value="gamepad">Bluetooth gamepad</option><option value="motion">iPhone motion</option><option value="camera">Camera preview</option></select></div><div class="line"><span>Gamepad status</span><b id="padStatus">Waiting for input</b></div><div class="line"><span>Motion permission</span><b id="gyroStatus">Not requested</b></div><button class="btn primary" id="motionBtn">Enable iPhone motion</button><button class="btn" id="cameraBtn">Preview camera</button><video id="cameraPreview" class="camera" autoplay muted playsinline style="display:none"></video><p class="hint">Camera preview is not finger tracking, depth sensing, 6DoF tracking, or a system-wide controller. Browser input works only inside this page.</p>',
+device:'<h3>Pair and verify hardware</h3><div class="line"><span>Glasses model</span><b>Not identified</b></div><div class="line"><span>Video input</span><b>Unconfirmed</b></div><div class="line"><span>Bluetooth audio</span><b>Use iOS Settings</b></div><div class="line"><span>Controller support</span><b>App dependent</b></div><div class="line"><span>Battery telemetry</span><b>Unavailable</b></div><button class="btn primary" id="checkDisplay">Compatibility checklist</button><button class="btn" id="pairHelp">Pairing instructions</button><div class="warning" id="deviceNote">Check the glasses manual for a display and USB-C DisplayPort, HDMI, or supported wireless display receiver. Bluetooth is not a video connection.</div>',
+media:'<h3>Media Space</h3><p class="hint">A true stereoscopic view requires compatible 3D content and display optics.</p><div class="appgrid"><button class="appcard" data-media="youtube"><span>▶️</span><b>YouTube</b><small>Open video service</small></button><button class="appcard" data-media="webxr"><span>🌐</span><b>WebXR check</b><small>Browser capability</small></button><button class="appcard" data-media="steam"><span>🕹️</span><b>Steam Link</b><small>PC streaming</small></button></div><p class="hint" id="mediaInfo">No media is playing.</p>',
+settings:'<h3>Personalize Horizon OS</h3><div class="line"><span>Immersive wallpaper</span><input class="toggle" id="wallModal" type="checkbox"></div><div class="line"><span>Reduce visual effects</span><input class="toggle" id="reduceModal" type="checkbox"></div><div class="line"><label>Preferred audio</label><select id="audioModal"><option>iOS selected output</option><option>Glasses (if paired)</option><option>iPhone speaker</option></select></div><button class="btn" id="fullScreen">Enter full screen</button><p class="hint">Preferences are stored locally in this browser. Full-screen support varies on iOS.</p>'
 };
-$("controlMode").addEventListener("change",()=>{
- const mode=$("controlMode").value;
- const info=controlDescriptions[mode];
- $("controlStatus").textContent=info[0];
- $("controlDescription").textContent=info[1];
-});
-
-$("displayCheck").addEventListener("click",()=>{
- const usbC= /iPhone/.test(navigator.userAgent);
- $("videoSupport").textContent=usbC?"USB-C model; exact model dependent":"Check iPhone model";
- $("deviceStatus").textContent="DISPLAY PATH NOT VERIFIED";
- alert("This app cannot detect whether your Temu glasses accept video. Check the glasses manual for USB-C DisplayPort, HDMI input, or a named wireless display feature. Bluetooth alone cannot carry the screen.");
-});
-$("connectionHelp").addEventListener("click",()=>{
- alert("Best-case setup: iPhone USB-C → compatible USB-C DisplayPort video glasses. If the glasses only support Bluetooth audio, they cannot display the iPhone screen. Pair audio in iPhone Settings → Bluetooth. A wireless display adapter only works if the glasses have a compatible receiver.");
-});
-if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(()=>{});
-</script>
-<script type="module">
-import { FilesetResolver, PoseLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
-const el = id => document.getElementById(id);
-const video = el("motionVideo"), canvas = el("motionCanvas"), ctx = canvas.getContext("2d");
-let stream = null, landmarker = null, running = false, facing = "user", lastFrame = 0, frames = 0, fpsStart = 0;
-const connections = [
- [0,1],[1,2],[2,3],[3,7],[0,4],[4,5],[5,6],[6,8],[9,10],
- [11,12],[11,13],[13,15],[15,17],[15,19],[15,21],[17,19],
- [12,14],[14,16],[16,18],[16,20],[16,22],[18,20],
- [11,23],[12,24],[23,24],[23,25],[25,27],[27,29],[29,31],[27,31],
- [24,26],[26,28],[28,30],[30,32],[28,32]
-];
-function resizeCanvas(){
- const w=video.videoWidth||640,h=video.videoHeight||480;
- canvas.width=w;canvas.height=h;
-}
-function drawPose(result){
- ctx.clearRect(0,0,canvas.width,canvas.height);
- const pose=result.landmarks?.[0];
- if(!pose){el("poseStatus").textContent="No body";el("pointStatus").textContent="0";el("gestureStatus").textContent="None";return;}
- const visible=pose.filter(p=>(p.visibility??1)>.45).length;
- el("poseStatus").textContent=visible>15?"Tracking":"Partial";
- el("pointStatus").textContent=String(visible);
- ctx.lineWidth=Math.max(3,canvas.width/180);ctx.strokeStyle="#65e3ff";ctx.fillStyle="#9bf1ff";
- for(const [a,b] of connections){const p=pose[a],q=pose[b];if((p.visibility??1)>.4&&(q.visibility??1)>.4){ctx.beginPath();ctx.moveTo(p.x*canvas.width,p.y*canvas.height);ctx.lineTo(q.x*canvas.width,q.y*canvas.height);ctx.stroke();}}
- for(const p of pose){if((p.visibility??1)>.4){ctx.beginPath();ctx.arc(p.x*canvas.width,p.y*canvas.height,Math.max(3,canvas.width/150),0,Math.PI*2);ctx.fill();}}
- const ls=pose[11],rs=pose[12],lw=pose[15],rw=pose[16];
- let gesture="Body detected";
- if(ls&&rs&&lw&&rw){
-   const leftUp=lw.y<ls.y-.08,rightUp=rw.y<rs.y-.08;
-   if(leftUp&&rightUp)gesture="Both hands raised";
-   else if(leftUp)gesture="Left hand raised";
-   else if(rightUp)gesture="Right hand raised";
-   else if(Math.abs(lw.x-rw.x)>.55)gesture="Arms spread";
- }
- el("gestureStatus").textContent=gesture;
-}
-async function loadTracker(){
- if(landmarker)return;
- el("poseStatus").textContent="Loading model…";
- const vision=await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
- landmarker=await PoseLandmarker.createFromOptions(vision,{
-   baseOptions:{modelAssetPath:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",delegate:"GPU"},
-   runningMode:"VIDEO",numPoses:1,minPoseDetectionConfidence:.5,minPosePresenceConfidence:.5,minTrackingConfidence:.5
- });
-}
-async function startCamera(){
- try{
-   if(!navigator.mediaDevices?.getUserMedia)throw new Error("Camera access is unavailable. Open this page in Safari over HTTPS.");
-   el("startTracking").disabled=true;
-   await loadTracker();
-   stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:facing,width:{ideal:640},height:{ideal:480},frameRate:{ideal:20,max:24}}});
-   video.srcObject=stream;await video.play();resizeCanvas();
-   running=true;el("cameraPlaceholder").style.display="none";el("cameraStatus").textContent="On";el("stopTracking").disabled=false;
-   el("facingStatus").textContent=facing==="user"?"Front":"Rear";
-   video.style.transform=canvas.style.transform=facing==="user"?"scaleX(-1)":"scaleX(1)";
-   fpsStart=performance.now();frames=0;requestAnimationFrame(trackFrame);
- }catch(err){el("cameraStatus").textContent="Unavailable";el("poseStatus").textContent="Could not start";alert("Camera tracking could not start: "+err.message);el("startTracking").disabled=false;}
-}
-function trackFrame(now){
- if(!running)return;
- if(video.readyState>=2 && now-lastFrame>60){
-   lastFrame=now;
-   try{const result=landmarker.detectForVideo(video,now);drawPose(result);frames++;if(now-fpsStart>=1000){el("trackingFps").textContent=String(Math.round(frames*1000/(now-fpsStart)));frames=0;fpsStart=now;}}
-   catch(e){el("poseStatus").textContent="Tracking error";}
- }
- requestAnimationFrame(trackFrame);
-}
-function stopCamera(){
- running=false;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
- video.srcObject=null;ctx.clearRect(0,0,canvas.width,canvas.height);
- el("cameraPlaceholder").style.display="grid";el("cameraStatus").textContent="Off";el("poseStatus").textContent="Waiting";el("pointStatus").textContent="0";el("trackingFps").textContent="—";el("gestureStatus").textContent="None";el("stopTracking").disabled=true;el("startTracking").disabled=false;
-}
-el("startTracking").addEventListener("click",startCamera);
-el("stopTracking").addEventListener("click",stopCamera);
-el("flipCamera").addEventListener("click",async()=>{facing=facing==="user"?"environment":"user";el("facingStatus").textContent=facing==="user"?"Front":"Rear";video.style.transform=canvas.style.transform=facing==="user"?"scaleX(-1)":"scaleX(1)";if(running){stopCamera();await startCamera();}});
-window.addEventListener("pagehide",stopCamera);
-</script>
-</body></html>
+function open(id){if(id==="home"){win.classList.remove("open");return}title.textContent=names[id]||"Horizon OS";body.innerHTML=views[id]||"";win.classList.add("open");if(id==="device")wireDevice();if(id==="controls")wireControls();if(id==="settings")wireSettings();if(id==="media")wireMedia();if(id==="library")body.querySelectorAll("[data-app]").forEach(b=>b.onclick=()=>{const x=b.dataset.app;if(x==="device"||x==="media")open(x);else launch(x)});}
+function launch(id){window.open(urls[id],"_blank","noopener")}
+document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>open(b.dataset.open));document.querySelectorAll("[data-launch]").forEach(b=>b.onclick=()=>launch(b.dataset.launch));$("close").onclick=()=>win.classList.remove("open");$("badge").onclick=()=>open("device");
+function syncMode(){const v=$("inputMode").value;$("inputLabel").textContent={touch:"Touch",gamepad:"Bluetooth gamepad",motion:"iPhone motion",camera:"Camera preview"}[v];if(v==="gamepad")watchPad()}$("inputMode").onchange=syncMode;
+function watchPad(){const f=()=>{const p=navigator.getGamepads?.().find(Boolean);const e=$("padStatus");if(e)e.textContent=p?"Connected: "+p.id:"Waiting for input"};f();window.addEventListener("gamepadconnected",f)}
+let stream=null,handler=null;
+function wireControls(){$("modalMode").value=$("inputMode").value;$("modalMode").onchange=e=>{$("inputMode").value=e.target.value;syncMode()};$("motionBtn").onclick=async()=>{try{if(typeof DeviceMotionEvent!=="undefined"&&DeviceMotionEvent.requestPermission){const p=await DeviceMotionEvent.requestPermission();if(p!=="granted")throw Error("Permission denied")}handler=()=>{};window.addEventListener("devicemotion",handler);$("gyroStatus").textContent="Granted";$("motionLabel").textContent="Permission granted"}catch(e){alert("Motion permission unavailable: "+e.message)}};$("cameraBtn").onclick=async()=>{try{const v=$("cameraPreview");if(!stream)stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false});v.srcObject=stream;v.style.display="block"}catch(e){alert("Camera unavailable: "+e.message)}}}
+function wireDevice(){$("checkDisplay").onclick=()=>{$("deviceNote").textContent="1. Identify the exact model. 2. Confirm there is an actual display. 3. Confirm USB-C DisplayPort, HDMI, or a supported wireless receiver. 4. Confirm iPhone compatibility. Until verified, mirroring is unavailable."};$("pairHelp").onclick=()=>{$("deviceNote").textContent="On iPhone, open Settings → Bluetooth, put the glasses in pairing mode, and select them. Bluetooth may support audio or controls only; it does not confirm video support."}}
+function wireSettings(){$("wallModal").checked=$("wall").checked;$("reduceModal").checked=$("reduce").checked;$("audioModal").value=$("audio").value;$("wallModal").onchange=e=>{$("wall").checked=e.target.checked;save()};$("reduceModal").onchange=e=>{$("reduce").checked=e.target.checked;save()};$("audioModal").onchange=e=>{$("audio").value=e.target.value;save()};$("fullScreen").onclick=()=>document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.()}
+function wireMedia(){body.querySelectorAll("[data-media]").forEach(b=>b.onclick=()=>{const x=b.dataset.media;if(x==="youtube")window.open("https://www.youtube.com/","_blank","noopener");else if(x==="steam")launch("steam");else $("mediaInfo").textContent="WebXR API "+("xr"in navigator?"is present; immersive sessions still require compatible hardware and permission.":"is not detected in this browser.")})}
+function save(){document.querySelector(".sky").style.display=$("wall").checked?"block":"none";document.body.style.filter=$("reduce").checked?"saturate(.75)":"none";localStorage.setItem("slvr-settings",JSON.stringify({wall:$("wall").checked,reduce:$("reduce").checked,audio:$("audio").value}))}
+$("wall").onchange=save;$("reduce").onchange=save;$("audio").onchange=save;try{const s=JSON.parse(localStorage.getItem("slvr-settings")||"{}");if(s.wall!==undefined)$("wall").checked=s.wall;if(s.reduce!==undefined)$("reduce").checked=s.reduce;if(s.audio)$("audio").value=s.audio;save()}catch(e){}
+$("quickBtn")?.addEventListener("click",()=>open("settings"));window.addEventListener("pagehide",()=>{if(stream)stream.getTracks().forEach(t=>t.stop());if(handler)window.removeEventListener("devicemotion",handler)});if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script></body></html>
